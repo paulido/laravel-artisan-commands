@@ -1,0 +1,20 @@
+{   
+    "authors": [
+        {
+        "name" : "Paul IDO",
+        "email" : "paulido92@gmail.com"
+        }
+    ],
+    "name": "paulido/commands",
+    "description": "this is a laravel artisan set of commands",
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Paulido\\Commands\\" : "src/"
+        }
+    }
+    
+}
