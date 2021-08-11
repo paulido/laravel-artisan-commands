@@ -1,20 +1,27 @@
-{   
-    "authors": [
-        {
-        "name" : "Paul IDO",
-        "email" : "paulido92@gmail.com"
-        }
-    ],
-    "name": "paulido/commands",
-    "description": "this is a laravel artisan set of commands",
+{
+    "name": "paulido/artisan",
+    "description": "this is a commands package",
     "type": "project",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Paul Ido",
+            "email": "paulido92@gmail.com"
+        }
+    ],
     "minimum-stability": "dev",
     "require": {},
     "autoload": {
         "psr-4": {
-            "Paulido\\Commands\\" : "src"
+            "Paulido\\Artisan\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Paulido\\Artisan\\ArtisanServiceProvider"
+            ]
         }
     }
-    
 }
+

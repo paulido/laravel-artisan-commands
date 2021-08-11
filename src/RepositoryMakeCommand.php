@@ -1,6 +1,6 @@
 <?php
 
-namespace Paulido\Commands;
+namespace Paulido\Artisan;
 
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputArgument;

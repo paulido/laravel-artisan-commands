@@ -1,12 +1,14 @@
 <?php
 
-namespace Paulido\Commands;
+namespace Paulido\Artisan;
 
 use Illuminate\Support\ServiceProvider;
-use Paulido\Commands\MakePackage;
+use Paulido\Artisan\MakePackage;
+use Paulido\Artisan\Hello;
+use Paulido\Artisan\MigrateTable;
 
 
-class CommandServiceProvider extends ServiceProvider
+class ArtisanServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -27,10 +29,13 @@ class CommandServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        $this->loadRoutesFrom(__DIR__.'/routes/console.php');
+        // $this->loadRoutesFrom(__DIR__.'/routes/console.php');
+        $this->loadRoutesFrom(__DIR__.'/routes/routes.php');
         if ($this->app->runningInConsole()) {
             $this->commands([
                 MakePackage::class,
+                MigrateTable::class,
+                Hello::class,
             ]);
         }
     }
