@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Paulido\Artisan\MakePackage;
 use Paulido\Artisan\Hello;
 use Paulido\Artisan\MigrateTable;
+use Paulido\Artisan\SeedModelTable;
 
 
 class ArtisanServiceProvider extends ServiceProvider
@@ -35,6 +36,7 @@ class ArtisanServiceProvider extends ServiceProvider
             $this->commands([
                 MakePackage::class,
                 MigrateTable::class,
+                SeedModelTable::class,
                 Hello::class,
             ]);
         }
