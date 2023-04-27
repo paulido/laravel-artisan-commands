@@ -5,4 +5,15 @@ this is a laravel package. it is a set of php artisan commands
 - MigrateTable
 - SeedModel Table
 - Hello
-## Usage
+## Install
+
+1. Add the following snippet in composer.json file (at the end)
+"repositories": [
+
+        {
+            "type": "vcs",
+            "url": "https://github.com/paulido/laravel-artisan-commands" 
+        }
+      ]
+2. Add "paulido/artisan" : "dev-master" in composer.json file require-dev section
+3. type composer update in the terminal
