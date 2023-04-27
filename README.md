@@ -8,8 +8,8 @@ this is a laravel package. it is a set of php artisan commands
 ## Install
 
 1. Add the following snippet in composer.json file (at the end)
+2.
 "repositories": [
-
         {
             "type": "vcs",
             "url": "https://github.com/paulido/laravel-artisan-commands" 
