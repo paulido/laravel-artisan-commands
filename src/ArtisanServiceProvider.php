@@ -38,6 +38,7 @@ class ArtisanServiceProvider extends ServiceProvider
                 MakePackage::class,
                 MigrateTable::class,
                 SeedModelTable::class,
+                Template::class,
                 
             ]);
         }
