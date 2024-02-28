@@ -22,5 +22,5 @@ this is a laravel package. it is a set of php artisan commands
 ```
 3. Type the following cmd in the terminal
 ```
-composer update
+composer update paulido/artisan or composer update
 ```
