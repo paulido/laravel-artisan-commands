@@ -55,8 +55,8 @@ class Template extends Command
             $line = str_replace(['src="../../', 'href="../../'], ['src="{{assets(\'/', 'href="{{assets(\'/'], $line);
         
             // Fermer {{assets(...)}} quand on rencontre une extension de fichier
-            $line = preg_replace_callback('/{{assets\(\'\/[^\'" ]+\.(css|js|jpg|jpeg|png|gif|svg)\'\)}}/', function($matches) {
-                return $matches[0] . '}}';
+            $line = preg_replace_callback('/{{assets\(\'\/[^\'" ]+\.(css|js|jpg|jpeg|png|gif|svg)/', function($matches) {
+                return $matches[0] . '\')}}';
             }, $line);
         
             $newContent .= $line;
