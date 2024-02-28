@@ -34,10 +34,11 @@ class ArtisanServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/routes/routes.php');
         if ($this->app->runningInConsole()) {
             $this->commands([
+                Hello::class,
                 MakePackage::class,
                 MigrateTable::class,
                 SeedModelTable::class,
-                Hello::class,
+                
             ]);
         }
     }
