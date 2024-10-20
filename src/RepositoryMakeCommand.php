@@ -13,7 +13,7 @@ class RepositoryMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'make:repository';
+    protected $name = 'make:repository {model}';
 
     /**
      * The console command description.
@@ -76,7 +76,7 @@ class RepositoryMakeCommand extends GeneratorCommand
      */
     private function setRepositoryClass()
     {
-        $name = ucwords(strtolower($this->argument('name')));
+        $name = ucwords(strtolower($this->argument('model')));
 
         $this->model = $name;
 
@@ -96,7 +96,7 @@ class RepositoryMakeCommand extends GeneratorCommand
      */
     protected function replaceClass($stub, $name)
     {
-        if(!$this->argument('name')){
+        if(!$this->argument('model')){
             throw new InvalidArgumentException("Missing required argument model name");
         }
 
