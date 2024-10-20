@@ -11,7 +11,7 @@ class MakePackage extends Command
      *
      * @var string
      */
-    protected $signature = 'make:package'; //{name=vendor/package}' (i.e name: <vendor/name> : paulido/package)
+    protected $signature = 'make:package {name}'; //{name=vendor/package}' (i.e name: <vendor/name> : paulido/package)
 
     /**
      * The console command description.
@@ -37,19 +37,16 @@ class MakePackage extends Command
      */
     public function handle()
     {
-        $vendor = $this->ask('Enter vendor name :');
+        $this->info("**Enter package name. (ie : vendor/name)");
         $name = $this->ask('Enter package name : ');
-        $path = base_path() . '/app/packages/' . $vendor . '/' . $name . '/src';
-        $command = "composer init" ;
+        $path = base_path() . '/app/packages/' . $name . '/src';
+        $command = "composer init --name={$name}" ;
 
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
-        $this->info("**package infos**");
-        $this->info("package name: {$vendor} . '/' . {$name}");
 
         exec("cd {$path} && {$command}");
-        Artisan::call("make:repository {$name}");
         
         $this->info( "package created succefully");
     }

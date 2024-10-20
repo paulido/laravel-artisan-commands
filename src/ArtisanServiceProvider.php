@@ -40,7 +40,7 @@ class ArtisanServiceProvider extends ServiceProvider
                 MigrateTable::class,
                 SeedModelTable::class,
                 Template::class,
-                RepositoryMakeCommand::class,
+                // RepositoryMakeCommand::class,
                 
             ]);
         }
