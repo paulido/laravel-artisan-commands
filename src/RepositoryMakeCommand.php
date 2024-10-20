@@ -22,8 +22,6 @@ class RepositoryMakeCommand extends GeneratorCommand
     public function __construct()
     {
         parent::__construct();
-        $name = ucwords(strtolower($this->argument('model')));
-        $this->model = $name;
     }
 
     public function handle() // Changed from fire() to handle()
@@ -45,7 +43,9 @@ class RepositoryMakeCommand extends GeneratorCommand
 
     private function setRepositoryClass()
     {
+        $name = ucwords(strtolower($this->argument('model')));
         $this->repositoryClass = $this->parseName($name) . 'Repository';
+
     }
 
     protected function replaceClass($stub, $name)
