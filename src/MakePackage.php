@@ -3,7 +3,7 @@
 namespace Paulido\Artisan;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
+
 class MakePackage extends Command
 {
     /**
@@ -11,14 +11,14 @@ class MakePackage extends Command
      *
      * @var string
      */
-    protected $signature = 'make:package {name}'; //{name=vendor/package}' (i.e name: <vendor/name> : paulido/package)
+    protected $signature = 'make:package {name : The vendor/package name (e.g., vendor/name)}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'scafold a package';
+    protected $description = 'Scaffold a new package.';
 
     /**
      * Create a new command instance.
@@ -37,17 +37,39 @@ class MakePackage extends Command
      */
     public function handle()
     {
-        $this->info("**Enter package name. (ie : vendor/name)");
-        $name = $this->ask('Enter package name : ');
-        $path = base_path() . '/app/packages/' . $name . '/src';
-        $command = "composer init --name={$name}" ;
+        $name = $this->argument('name');
 
+        // Validate the package name
+        if (!$this->isValidPackageName($name)) {
+            $this->error('Invalid package name format. Please use vendor/package format.');
+            return 1; // Error code
+        }
+
+        $path = base_path() . '/app/packages/' . $name . '/src';
+        $command = "composer init --name={$name} --no-interaction";
+
+        // Create the package directory if it doesn't exist
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
 
+        // Execute the composer command to initialize the package
         exec("cd {$path} && {$command}");
-        
-        $this->info( "package created succefully");
+
+        $this->info("Package created successfully.");
+
+        return 0; // Success
+    }
+
+    /**
+     * Validate the package name format.
+     *
+     * @param string $name
+     * @return bool
+     */
+    protected function isValidPackageName($name)
+    {
+        // Simple regex for vendor/package format
+        return preg_match('/^[a-z0-9-_]+\/[a-z0-9-_]+$/i', $name);
     }
 }
