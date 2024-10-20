@@ -39,22 +39,21 @@ class Template extends Command
     {
         $file = $this->argument('file');
 
-        // Vérifier si le fichier existe
         if (!file_exists($file)) {
             $this->error("Le fichier '$file' n'existe pas.");
-            return 1; // Retourner un code d'erreur
+            return 1; // Return error code
         }
 
         $destination = $this->argument('destination') ?? resource_path().'/views/template.blade.php';
 
-        $lines = file($file); // Lire le fichier dans un tableau de lignes
+        $lines = file($file); // Read file line by line in an array
 
         $newContent = '';
         foreach ($lines as $line) {
-            // Remplacer src="../../ ou href="../../ par {{assets('/
+            // Remplace src="../../ ou href="../../ by {{assets('/
             $line = str_replace(['src="../../', 'href="../../'], ['src="{{assets(\'/', 'href="{{assets(\'/'], $line);
         
-            // Fermer {{assets(...)}} quand on rencontre une extension de fichier
+            // Close {{assets(...)}}
             $line = preg_replace_callback('/{{assets\(\'\/[^\'" ]+\.(css|js|jpg|jpeg|png|gif|svg)/', function($matches) {
                 return $matches[0] . '\')}}';
             }, $line);
@@ -62,10 +61,9 @@ class Template extends Command
             $newContent .= $line;
         }
         
-        // Écrire le contenu mis à jour dans le fichier de destination
         file_put_contents($destination, $newContent);
         $this->info("Remplacement terminé !");
         
-        return 0; // Retourner un code de succès
+        return 0; // succes
     }
 }

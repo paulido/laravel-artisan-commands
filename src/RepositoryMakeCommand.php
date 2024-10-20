@@ -8,12 +8,23 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 class RepositoryMakeCommand extends GeneratorCommand
 {
-    protected $name = 'make:repository {model}';
+    protected $signature = 'make:repository {model}';
     protected $description = 'Create a new model repository';
     protected $type = 'Repository';
-
     private $repositoryClass;
     private $model;
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $name = ucwords(strtolower($this->argument('model')));
+        $this->model = $name;
+    }
 
     public function handle() // Changed from fire() to handle()
     {
@@ -34,8 +45,6 @@ class RepositoryMakeCommand extends GeneratorCommand
 
     private function setRepositoryClass()
     {
-        $name = ucwords(strtolower($this->argument('model')));
-        $this->model = $name;
         $this->repositoryClass = $this->parseName($name) . 'Repository';
     }
 
