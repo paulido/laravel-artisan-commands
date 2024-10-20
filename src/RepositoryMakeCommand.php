@@ -5,6 +5,7 @@ namespace Paulido\Artisan;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Illuminate\Filesystem\Filesystem; // Import the Filesystem class
 
 class RepositoryMakeCommand extends GeneratorCommand
 {
@@ -17,14 +18,15 @@ class RepositoryMakeCommand extends GeneratorCommand
     /**
      * Create a new command instance.
      *
+     * @param \Illuminate\Filesystem\Filesystem $files
      * @return void
      */
-    public function __construct()
+    public function __construct(Filesystem $files)
     {
-        parent::__construct();
+        parent::__construct($files); // Pass the Filesystem instance to the parent constructor
     }
 
-    public function handle() // Changed from fire() to handle()
+    public function handle()
     {
         $this->setRepositoryClass();
 
@@ -44,8 +46,8 @@ class RepositoryMakeCommand extends GeneratorCommand
     private function setRepositoryClass()
     {
         $name = ucwords(strtolower($this->argument('model')));
+        $this->model = $name; 
         $this->repositoryClass = $this->parseName($name) . 'Repository';
-
     }
 
     protected function replaceClass($stub, $name)
@@ -55,23 +57,23 @@ class RepositoryMakeCommand extends GeneratorCommand
         }
 
         $stub = parent::replaceClass($stub, $name);
-        return str_replace('DummyModel', $this->model, $stub);
+        return str_replace('DummyModel', $this->model, $stub); 
     }
 
     protected function getStub()
     {
-        return base_path('Paulido/Commands/stubs/Repository.stub'); // Adjusted path
+        return base_path('Paulido/Commands/stubs/Repository.stub');
     }
 
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Paulido\Commands'; // Corrected namespace
+        return $rootNamespace . '\Paulido\Commands'; 
     }
 
     protected function getArguments()
     {
         return [
-            ['model', InputArgument::REQUIRED, 'The name of the model class.'], // Changed to 'model'
+            ['model', InputArgument::REQUIRED, 'The name of the model class.'],
         ];
     }
 }
