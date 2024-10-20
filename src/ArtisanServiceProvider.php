@@ -7,6 +7,7 @@ use Paulido\Artisan\MakePackage;
 use Paulido\Artisan\Hello;
 use Paulido\Artisan\MigrateTable;
 use Paulido\Artisan\SeedModelTable;
+use Paulido\Artisan\RepositoryMakeCommand;
 
 
 class ArtisanServiceProvider extends ServiceProvider
@@ -39,6 +40,7 @@ class ArtisanServiceProvider extends ServiceProvider
                 MigrateTable::class,
                 SeedModelTable::class,
                 Template::class,
+                RepositoryMakeCommand::class,
                 
             ]);
         }
