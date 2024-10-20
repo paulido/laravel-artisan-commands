@@ -46,7 +46,7 @@ class MakePackage extends Command
         }
 
         $path = base_path() . '/app/packages/' . $name . '/src';
-        $command = "composer init --name={$name} --no-interaction";
+        $command = "composer init --name={$name}";
 
         // Create the package directory if it doesn't exist
         if (!file_exists($path)) {
