@@ -5,6 +5,7 @@ namespace Paulido\Artisan;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Exception;
+use InvalidArgumentException;
 
 class MakePackage extends Command
 {
@@ -42,15 +43,16 @@ class MakePackage extends Command
 
         // Create the package directory structure
         $this->createDirectory($srcPath);
-        $this->createServiceProvider($srcPath, $name);
-        $this->createRoutesFile($srcPath);
+        $serviceName = $this->createServiceProvider($srcPath, $name);
+        // Uncomment if routes file creation is needed
+        // $this->createRoutesFile($srcPath);
         $this->initializeComposer($srcPath, $name);
 
         $this->info("Package created successfully.");
 
         // Register the service provider
         try {
-            $this->appendExtraToComposerJson("{$name}\\YourServiceProvider", "YourAlias");
+            $this->appendExtraToComposerJson("{$name}\\{$serviceName}", $serviceName);
         } catch (Exception $e) {
             $this->error("Error: " . $e->getMessage());
             return 1; // Error code
@@ -90,23 +92,12 @@ class MakePackage extends Command
      */
     protected function createServiceProvider($srcPath, $name)
     {
-        $providerTemplate = "<?php\n\nnamespace {$name};\n\nuse Illuminate\Support\ServiceProvider;\n\nclass YourServiceProvider extends ServiceProvider\n{\n    public function register()\n    {\n        // Register any package bindings here.\n    }\n\n    public function boot()\n    {\n        // Perform package bootstrapping here.\n    }\n}\n";
-        
-        file_put_contents($srcPath . '/YourServiceProvider.php', $providerTemplate);
+        $providerTemplate = $this->getStub();
+        $providerName = ucfirst(explode('/', $name)[1]) . 'ServiceProvider';
+        $providerContent = $this->replaceClass($providerTemplate, $providerName);
+        file_put_contents($srcPath . '/' . $providerName . '.php', $providerContent);
         $this->info("Service provider created.");
-    }
-
-    /**
-     * Create a routes file.
-     *
-     * @param string $srcPath
-     */
-    protected function createRoutesFile($srcPath)
-    {
-        $routesTemplate = "<?php\n\nuse Illuminate\Support\Facades\Route;\n\nRoute::get('/your-route', function () {\n    return 'Hello from your package!';\n});\n";
-        
-        file_put_contents($srcPath . '/routes/web.php', $routesTemplate);
-        $this->info("Routes file created.");
+        return $providerName;
     }
 
     /**
@@ -117,7 +108,7 @@ class MakePackage extends Command
      */
     protected function initializeComposer($srcPath, $name)
     {
-        $command = "composer init --name={$name} --no-interaction";
+        $command = "composer init --name={$name}";
         exec("cd {$srcPath} && {$command}");
         $this->info("Composer initialized.");
     }
@@ -154,5 +145,42 @@ class MakePackage extends Command
         file_put_contents($composerPath, json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
         $this->info("Successfully appended to composer.json.");
+    }
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub()
+    {
+        return base_path('Paulido/Artisan/stubs/ServiceProvider.stub'); // Corrected path and namespace
+    }
+
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param  string  $rootNamespace
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace . '\\Paulido\\Artisan'; // Corrected namespace format
+    }
+
+    /**
+     * Replace the class name for the given stub.
+     *
+     * @param  string  $stub
+     * @param  string  $name
+     * @return string
+     */
+    protected function replaceClass($stub, $name)
+    {
+        if (!$this->argument('name')) {
+            throw new InvalidArgumentException("Missing required argument package name");
+        }
+        $stub = str_replace('DummyServiceProvider', $name, $stub);
+        return $stub;
     }
 }
